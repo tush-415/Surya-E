@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SuryaERP</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;}
+body{background:#0A0B0D;color:#EEEEF0;min-height:100vh;}
+
+/* ── SCREENS ── */
+.screen{display:none;min-height:100vh;}
+.screen.on{display:flex;}
+
+/* ── LOGIN ── */
+#s-login{align-items:center;justify-content:center;background:#0A0B0D;}
+.login-box{background:#181A20;border:1px solid #2A2D37;border-radius:16px;padding:40px;width:420px;max-width:95vw;}
+.login-logo{display:flex;align-items:center;gap:12px;margin-bottom:28px;}
+.login-sun{width:44px;height:44px;background:#F59E0B;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;}
+.login-brand{font-size:22px;font-weight:800;letter-spacing:-0.5px;}
+.login-sub{font-size:11px;color:#F59E0B;letter-spacing:2px;text-transform:uppercase;}
+.login-title{font-size:20px;font-weight:700;margin-bottom:6px;}
+.login-hint{font-size:13px;color:#8B8FA0;margin-bottom:24px;}
+.role-btn{
+  width:100%;padding:13px 16px;margin-bottom:8px;
+  background:#1F2128;border:1px solid #2A2D37;border-radius:10px;
+  color:#EEEEF0;font-size:13px;cursor:pointer;text-align:left;
+  display:flex;align-items:center;gap:12px;
+  transition:border-color 0.15s,background 0.15s;
+}
+.role-btn:hover{border-color:#F59E0B;background:#272931;}
+.role-btn.customer:hover{border-color:#10B981;}
+.role-ico{font-size:20px;width:28px;text-align:center;flex-shrink:0;}
+.role-name{font-weight:700;font-size:14px;}
+.role-cred{font-size:11px;color:#52566A;margin-top:2px;}
+.divider{display:flex;align-items:center;gap:10px;margin:16px 0;color:#52566A;font-size:12px;}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:#2A2D37;}
+.inp{width:100%;background:#1F2128;border:1px solid #2A2D37;border-radius:8px;color:#EEEEF0;font-size:13px;padding:11px 14px;outline:none;margin-bottom:10px;transition:border-color 0.15s;}
+.inp:focus{border-color:#F59E0B;}
+.inp::placeholder{color:#52566A;}
+.err{display:none;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);border-radius:8px;padding:10px 14px;font-size:12.5px;color:#FCA5A5;margin-bottom:12px;}
+.err.on{display:block;}
+.btn-signin{width:100%;height:46px;background:#F59E0B;color:#000;border:none;border-radius:10px;font-size:15px;font-weight:800;cursor:pointer;transition:background 0.15s;}
+.btn-signin:hover{background:#FBBF24;}
+
+/* ── ADMIN PORTAL ── */
+#s-admin{flex-direction:row;}
+#sidebar{
+  width:230px;background:#111318;border-right:1px solid #2A2D37;
+  min-height:100vh;position:fixed;top:0;left:0;bottom:0;
+  display:flex;flex-direction:column;overflow-y:auto;z-index:100;
+}
+.sb-top{padding:18px 16px;border-bottom:1px solid #2A2D37;}
+.sb-logo{display:flex;align-items:center;gap:10px;}
+.sb-sun{width:36px;height:36px;background:#F59E0B;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.sb-name{font-size:17px;font-weight:900;letter-spacing:-0.4px;}
+.sb-tag{font-size:9px;color:#F59E0B;letter-spacing:1.8px;text-transform:uppercase;}
+.sb-sec{padding:12px 8px 2px;}
+.sb-lbl{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#30333F;padding:0 8px;margin-bottom:4px;}
+.sb-btn{
+  display:flex;align-items:center;gap:9px;
+  width:100%;padding:8px 10px;border:none;background:none;
+  color:#8B8FA0;font-size:13px;border-radius:8px;cursor:pointer;
+  transition:all 0.14s;margin-bottom:1px;text-align:left;
+}
+.sb-btn:hover{background:#1F2128;color:#EEEEF0;}
+.sb-btn.on{background:rgba(245,158,11,0.12);color:#F59E0B;font-weight:600;border:1px solid rgba(245,158,11,0.2);}
+.sb-ico{font-size:14px;width:18px;text-align:center;}
+.sb-badge{margin-left:auto;background:#EF4444;color:#fff;font-size:9px;font-weight:700;padding:1px 5px;border-radius:7px;}
+.sb-badge.a{background:#F59E0B;color:#000;}
+.sb-foot{margin-top:auto;padding:12px;border-top:1px solid #2A2D37;}
+.sb-user{display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;cursor:pointer;}
+.sb-av{width:32px;height:32px;border-radius:50%;background:rgba(245,158,11,0.15);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#F59E0B;flex-shrink:0;}
+.sb-uname{font-size:12.5px;font-weight:600;}
+.sb-urole{font-size:10px;color:#30333F;}
+.sb-out{width:100%;margin-top:8px;padding:7px;background:none;border:1px solid #2A2D37;border-radius:7px;color:#52566A;font-size:11.5px;cursor:pointer;transition:all 0.14s;}
+.sb-out:hover{border-color:#EF4444;color:#EF4444;}
+
+#admin-main{margin-left:230px;flex:1;min-height:100vh;}
+.topbar{
+  background:#111318;border-bottom:1px solid #2A2D37;height:56px;
+  padding:0 24px;display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:50;
+}
+.tb-title{font-size:16px;font-weight:800;letter-spacing:-0.3px;}
+.tb-btn{height:32px;padding:0 14px;background:#F59E0B;color:#000;border:none;border-radius:8px;font-size:12.5px;font-weight:700;cursor:pointer;}
+.tb-btn:hover{background:#FBBF24;}
+
+/* Pages */
+.apage{display:none;padding:24px;animation:fadeUp 0.2s ease;}
+.apage.on{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* KPI cards */
+.krow{display:grid;gap:13px;margin-bottom:20px;}
+.k4{grid-template-columns:repeat(4,1fr);}
+.k3{grid-template-columns:repeat(3,1fr);}
+.k2{grid-template-columns:repeat(2,1fr);}
+.kcard{background:#181A20;border:1px solid #2A2D37;border-radius:10px;padding:16px 18px;position:relative;overflow:hidden;}
+.kcard::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:#F59E0B;opacity:.7;}
+.kcard.g::after{background:#10B981;}
+.kcard.b::after{background:#3B82F6;}
+.kcard.p::after{background:#8B5CF6;}
+.kcard.r::after{background:#EF4444;}
+.kcard.o::after{background:#F97316;}
+.k-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.9px;color:#52566A;margin-bottom:10px;}
+.k-val{font-size:26px;font-weight:900;letter-spacing:-1px;margin-bottom:5px;}
+.k-delta{font-size:11px;color:#52566A;}
+.k-delta.up{color:#10B981;}
+.k-delta.dn{color:#EF4444;}
+
+/* Panel */
+.panel{background:#181A20;border:1px solid #2A2D37;border-radius:10px;overflow:hidden;margin-bottom:16px;}
+.ph{padding:13px 18px;border-bottom:1px solid #2A2D37;display:flex;align-items:center;justify-content:space-between;}
+.ph-t{font-size:13.5px;font-weight:700;}
+.ph-s{font-size:11px;color:#52566A;margin-top:1px;}
+.pb{padding:18px;}
+
+/* Table */
+.tw{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;min-width:580px;}
+th{padding:9px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.9px;color:#52566A;text-align:left;background:#181A20;border-bottom:1px solid #2A2D37;}
+td{padding:11px 14px;border-bottom:1px solid #1F2128;font-size:13px;vertical-align:middle;}
+tbody tr:hover td{background:#1F2128;}
+tbody tr:last-child td{border-bottom:none;}
+.tdp{font-weight:600;}
+.tds{font-size:11px;color:#52566A;margin-top:2px;}
+.tdm{font-family:monospace;font-size:11px;color:#8B8FA0;}
+
+/* Badge */
+.badge{display:inline-flex;align-items:center;padding:2px 9px;border-radius:20px;font-size:10.5px;font-weight:700;white-space:nowrap;}
+.bn{background:rgba(59,130,246,.12);color:#60A5FA;border:1px solid rgba(59,130,246,.2);}
+.bw{background:rgba(16,185,129,.12);color:#34D399;border:1px solid rgba(16,185,129,.2);}
+.bq{background:rgba(249,115,22,.12);color:#FB923C;border:1px solid rgba(249,115,22,.2);}
+.bl{background:rgba(239,68,68,.12);color:#F87171;border:1px solid rgba(239,68,68,.2);}
+.bp{background:rgba(148,163,184,.1);color:#94A3B8;border:1px solid rgba(148,163,184,.15);}
+.bcr{background:rgba(139,92,246,.12);color:#A78BFA;border:1px solid rgba(139,92,246,.2);}
+.bam{background:rgba(245,158,11,.12);color:#F59E0B;border:1px solid rgba(245,158,11,.2);}
+
+/* Grid */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.g75{display:grid;grid-template-columns:7fr 5fr;gap:16px;}
+
+/* Progress */
+.pt{height:4px;background:#272931;border-radius:2px;overflow:hidden;margin-top:5px;}
+.pf{height:100%;border-radius:2px;background:#F59E0B;}
+.pfg{background:#10B981;}
+.pfb{background:#3B82F6;}
+.pfp{background:#8B5CF6;}
+
+/* Bar chart */
+.bchart{display:flex;align-items:flex-end;gap:4px;height:88px;}
+.bbar{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;}
+.bfill{width:100%;border-radius:3px 3px 0 0;position:relative;overflow:hidden;min-height:4px;background:#272931;}
+.bfill::after{content:'';position:absolute;inset:0;background:rgba(245,158,11,0.55);border-radius:inherit;}
+.blbl{font-size:9px;color:#52566A;}
+
+/* Kanban */
+.kanban{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
+.kcol{background:#181A20;border:1px solid #2A2D37;border-radius:10px;padding:12px;}
+.kch{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid #2A2D37;}
+.kcn{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#8B8FA0;}
+.kcc{font-size:10px;font-weight:700;background:#272931;color:#8B8FA0;padding:1px 7px;border-radius:7px;}
+.kcard2{background:#1F2128;border:1px solid #2A2D37;border-radius:8px;padding:10px 12px;margin-bottom:8px;cursor:pointer;transition:all .14s;}
+.kcard2:hover{border-color:#F59E0B;}
+.kn{font-size:12.5px;font-weight:600;}
+.kl{font-size:10.5px;color:#52566A;margin-top:2px;}
+.kk{font-size:11px;color:#F59E0B;font-weight:700;margin:5px 0;font-family:monospace;}
+.kf{display:flex;justify-content:space-between;font-size:10px;color:#52566A;}
+
+/* Timeline */
+.tl{display:flex;flex-direction:column;}
+.tli{display:flex;gap:11px;padding-bottom:12px;}
+.tll{display:flex;flex-direction:column;align-items:center;}
+.tld{width:8px;height:8px;border-radius:50%;background:#F59E0B;flex-shrink:0;margin-top:3px;}
+.tld.g{background:#10B981;}
+.tld.b{background:#3B82F6;}
+.tld.d{background:#272931;}
+.tlln{flex:1;width:1px;background:#2A2D37;margin-top:3px;}
+.tli:last-child .tlln{display:none;}
+.tlt{font-size:12.5px;font-weight:600;}
+.tlm{font-size:11px;color:#52566A;margin-top:1px;}
+
+/* Agent card */
+.agcard{background:#181A20;border:1px solid #2A2D37;border-radius:10px;padding:15px 18px;display:flex;align-items:center;gap:15px;margin-bottom:10px;}
+.agav{width:44px;height:44px;border-radius:50%;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.28);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#F59E0B;flex-shrink:0;}
+.agi{flex:1;}
+.agn{font-size:14px;font-weight:700;}
+.agz{font-size:11px;color:#52566A;margin-top:2px;}
+.agm{display:flex;gap:18px;margin-top:8px;}
+.agmv{font-size:17px;font-weight:800;letter-spacing:-.4px;}
+.agml{font-size:9px;text-transform:uppercase;letter-spacing:.7px;color:#52566A;}
+.agc{text-align:right;flex-shrink:0;}
+.age{font-size:20px;font-weight:900;letter-spacing:-.5px;color:#10B981;}
+.agel{font-size:10px;color:#52566A;}
+.agp{font-size:11px;margin-top:4px;font-weight:600;}
+
+/* Metric list */
+.mitem{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #2A2D37;}
+.mitem:last-child{border-bottom:none;}
+.mn{flex:1;font-size:12.5px;}
+.mbar{width:100px;}
+.mv{width:52px;text-align:right;font-size:12.5px;font-weight:700;}
+
+/* Stat row */
+.sr{display:flex;gap:22px;padding:13px 0;border-top:1px solid #2A2D37;margin-top:13px;}
+.srv{font-size:19px;font-weight:900;letter-spacing:-.4px;}
+.srl{font-size:9.5px;color:#52566A;text-transform:uppercase;letter-spacing:.5px;margin-top:1px;}
+
+/* Live dot */
+.ldot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#10B981;margin-right:4px;animation:pulse 2s infinite;}
+.ldot.off{background:#EF4444;animation:none;}
+.ldot.warn{background:#F97316;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* Perf bar */
+.pfbar{display:flex;align-items:center;gap:7px;}
+.pftrack{flex:1;height:4px;background:#272931;border-radius:2px;}
+.pffill{height:100%;border-radius:2px;}
+
+/* Subsidy pipeline */
+.subpipe{display:flex;margin-bottom:20px;}
+.spstage{flex:1;padding:14px;background:#181A20;border:1px solid #2A2D37;border-right:none;position:relative;}
+.spstage:first-child{border-radius:10px 0 0 10px;}
+.spstage:last-child{border-right:1px solid #2A2D37;border-radius:0 10px 10px 0;}
+.spstage.on{background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.28);}
+.spn{font-family:monospace;font-size:9px;color:#52566A;margin-bottom:3px;}
+.spname{font-size:11.5px;font-weight:700;color:#8B8FA0;margin-bottom:8px;}
+.spval{font-size:22px;font-weight:900;letter-spacing:-.8px;}
+.splbl{font-size:10px;color:#52566A;margin-top:1px;}
+.sparr{position:absolute;right:-10px;top:50%;transform:translateY(-50%);font-size:11px;color:#30333F;z-index:2;}
+
+/* Alert */
+.alert{display:flex;align-items:center;gap:10px;padding:11px 16px;border-radius:8px;margin-bottom:18px;font-size:12.5px;}
+.aw{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.22);color:#FCD34D;}
+.ad{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.22);color:#FCA5A5;}
+.ai{background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.22);color:#93C5FD;}
+.aa{margin-left:auto;font-weight:700;cursor:pointer;text-decoration:underline;}
+
+/* Filter */
+.fsel{background:#1F2128;border:1px solid #2A2D37;color:#8B8FA0;font-size:11.5px;padding:5px 10px;border-radius:7px;outline:none;cursor:pointer;height:30px;}
+.btn-ghost{height:30px;padding:0 12px;background:#1F2128;border:1px solid #2A2D37;border-radius:8px;color:#8B8FA0;font-size:12px;cursor:pointer;}
+.btn-ghost:hover{color:#EEEEF0;}
+.btn-sm{height:26px;padding:0 10px;font-size:11px;}
+
+/* Modal */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:400;align-items:center;justify-content:center;}
+.overlay.on{display:flex;}
+.modal{background:#181A20;border:1px solid #383C48;border-radius:14px;padding:26px;width:560px;max-width:95vw;max-height:88vh;overflow-y:auto;}
+.modal-title{font-size:18px;font-weight:900;margin-bottom:20px;}
+.modal-title span{color:#F59E0B;}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:13px;}
+.fg{display:flex;flex-direction:column;gap:5px;}
+.fg.full{grid-column:1/-1;}
+.fg label{font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#52566A;}
+.fg input,.fg select,.fg textarea{background:#1F2128;border:1px solid #2A2D37;border-radius:8px;color:#EEEEF0;font-size:13px;padding:9px 12px;outline:none;}
+.fg input:focus,.fg select:focus{border-color:#F59E0B;}
+.fg select option{background:#1F2128;}
+.fg textarea{resize:vertical;min-height:68px;}
+.mact{display:flex;gap:8px;justify-content:flex-end;margin-top:18px;padding-top:16px;border-top:1px solid #2A2D37;}
+
+/* ── CUSTOMER PORTAL ── */
+#s-customer{flex-direction:column;background:#F0F2F5;}
+.cp-nav{background:#fff;border-bottom:1px solid #E4E6EC;height:60px;padding:0 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
+.cp-logo{display:flex;align-items:center;gap:10px;}
+.cp-sun{width:34px;height:34px;background:#F59E0B;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;}
+.cp-brand{font-size:16px;font-weight:900;color:#14151A;}
+.cp-sub{font-size:9px;color:#D97706;letter-spacing:1.5px;text-transform:uppercase;}
+.cp-tabs{display:flex;gap:4px;}
+.cp-tab{padding:7px 14px;border-radius:8px;border:none;background:none;color:#6B7080;font-size:13px;font-weight:500;cursor:pointer;transition:all .14s;}
+.cp-tab:hover{background:#F0F2F5;color:#14151A;}
+.cp-tab.on{background:#FEF3C7;color:#D97706;font-weight:700;}
+.cp-right{display:flex;align-items:center;gap:10px;}
+.cp-pill{display:flex;align-items:center;gap:8px;padding:6px 12px;background:#F0F2F5;border-radius:20px;}
+.cp-av{width:28px;height:28px;border-radius:50%;background:#F59E0B;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#000;}
+.cp-uname{font-size:12.5px;font-weight:600;color:#14151A;}
+.cp-out{padding:6px 12px;background:none;border:1px solid #E4E6EC;border-radius:8px;font-size:12px;color:#6B7080;cursor:pointer;}
+.cp-out:hover{border-color:#EF4444;color:#EF4444;}
+.cp-body{max-width:1100px;margin:0 auto;padding:28px 24px;width:100%;}
+.cp-page{display:none;animation:fadeUp 0.2s ease;}
+.cp-page.on{display:block;}
+
+/* CP Hero */
+.cp-hero{background:linear-gradient(135deg,#1C1D22,#111318);border-radius:16px;padding:28px 32px;margin-bottom:22px;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden;}
+.cp-hw{font-size:22px;font-weight:900;letter-spacing:-.5px;color:#EEEEF0;margin-bottom:4px;}
+.cp-hw span{color:#F59E0B;}
+.cp-hsub{font-size:13px;color:#6B7080;margin-bottom:18px;}
+.cp-hstats{display:flex;gap:28px;}
+.cp-hv{font-size:26px;font-weight:900;letter-spacing:-1px;color:#EEEEF0;}
+.cp-hl{font-size:10px;color:#52566A;text-transform:uppercase;letter-spacing:.6px;margin-top:2px;}
+.cp-live{font-size:40px;font-weight:900;letter-spacing:-2px;color:#F59E0B;text-align:right;}
+.cp-live-lbl{font-size:13px;color:#6B7080;margin-bottom:4px;}
+.cp-live-badge{display:inline-flex;align-items:center;gap:5px;margin-top:8px;background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.25);padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;color:#34D399;}
+
+/* CP cards */
+.cp-kgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px;}
+.cp-kcard{background:#fff;border:1px solid #E4E6EC;border-radius:12px;padding:16px 18px;position:relative;overflow:hidden;}
+.cp-kcard::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:#F59E0B;}
+.cp-kcard.g::after{background:#10B981;}
+.cp-kcard.b::after{background:#3B82F6;}
+.cp-kcard.p::after{background:#8B5CF6;}
+.cp-klbl{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:#6B7080;margin-bottom:8px;}
+.cp-kval{font-size:24px;font-weight:900;letter-spacing:-1px;color:#14151A;}
+.cp-kdelta{font-size:11px;margin-top:4px;color:#6B7080;}
+
+/* CP panel */
+.cp-panel{background:#fff;border:1px solid #E4E6EC;border-radius:12px;overflow:hidden;margin-bottom:16px;}
+.cp-ph{padding:14px 20px;border-bottom:1px solid #E4E6EC;display:flex;align-items:center;justify-content:space-between;}
+.cp-pht{font-size:14px;font-weight:700;color:#14151A;}
+.cp-pb{padding:18px 20px;}
+
+/* CP gen chart */
+.cp-bchart{display:flex;align-items:flex-end;gap:6px;height:100px;}
+.cp-bbar{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;}
+.cp-bfill{width:100%;border-radius:4px 4px 0 0;background:#FEF3C7;min-height:4px;cursor:pointer;}
+.cp-bfill:hover{background:#F59E0B;}
+.cp-blbl{font-size:9px;color:#6B7080;}
+
+/* CP subsidy steps */
+.cp-steps{display:flex;margin-bottom:18px;}
+.css{flex:1;padding:14px 16px;background:#F8F9FC;border:1px solid #E4E6EC;border-right:none;position:relative;}
+.css:first-child{border-radius:10px 0 0 10px;}
+.css:last-child{border-right:1px solid #E4E6EC;border-radius:0 10px 10px 0;}
+.css.done{background:#ECFDF5;border-color:#A7F3D0;}
+.css.act{background:#FFFBEB;border-color:#FCD34D;}
+.css-n{font-size:9px;font-family:monospace;color:#6B7080;margin-bottom:3px;}
+.css-name{font-size:12px;font-weight:700;color:#14151A;margin-bottom:6px;}
+.css-date{font-size:11px;color:#6B7080;}
+.css-st{font-size:11px;font-weight:700;}
+.css-arr{position:absolute;right:-10px;top:50%;transform:translateY(-50%);color:#CBD5E1;font-size:11px;z-index:2;}
+
+/* CP savings */
+.cp-sav{background:linear-gradient(135deg,#FFFBEB,#FEF3C7);border:1px solid #FCD34D;border-radius:12px;padding:20px 24px;margin-bottom:16px;}
+.cp-sav-title{font-size:15px;font-weight:800;color:#D97706;margin-bottom:14px;}
+.cp-sav-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.cp-sv{font-size:22px;font-weight:900;letter-spacing:-.8px;color:#14151A;}
+.cp-sl{font-size:11px;color:#92400E;margin-top:2px;}
+
+/* CP referral */
+.cp-ref{background:linear-gradient(135deg,#1C1D22,#111318);border-radius:12px;padding:22px 26px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;}
+.cp-ref-code{font-family:monospace;font-size:18px;font-weight:700;color:#F59E0B;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);padding:8px 18px;border-radius:8px;cursor:pointer;}
+
+/* CP buttons */
+.cp-btn-pri{height:36px;padding:0 18px;background:#F59E0B;color:#000;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;}
+.cp-btn-ghost{height:36px;padding:0 14px;background:none;border:1px solid #E4E6EC;border-radius:8px;font-size:12.5px;color:#6B7080;cursor:pointer;}
+
+/* AI analysis */
+.ai-result{display:none;background:#181A20;border:1px solid #2A2D37;border-radius:10px;padding:20px;margin-top:16px;}
+.ai-result.on{display:block;}
+.ai-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px;}
+.ai-v{font-size:20px;font-weight:900;letter-spacing:-.5px;}
+.ai-l{font-size:10px;color:#52566A;text-transform:uppercase;letter-spacing:.5px;margin-top:2px;}
+.ai-prop{background:#1F2128;border:1px solid #2A2D37;border-radius:8px;padding:14px;}
+.ai-prop-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #2A2D37;font-size:12.5px;}
+.ai-prop-row:last-child{border-bottom:none;}
+.spin{display:inline-block;width:16px;height:16px;border:2px solid #272931;border-top-color:#F59E0B;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:8px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* WA Chat */
+.wa-flow{background:#181A20;border:1px solid #2A2D37;border-radius:10px;overflow:hidden;margin-bottom:16px;}
+.wa-head{background:#128C7E;padding:14px 18px;display:flex;align-items:center;gap:10px;}
+.wa-head-ico{width:36px;height:36px;background:#075E54;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.wa-head-name{font-size:14px;font-weight:700;color:#fff;}
+.wa-head-sub{font-size:11px;color:rgba(255,255,255,.65);}
+.wa-chat{padding:16px;background:#0D1117;min-height:300px;display:flex;flex-direction:column;gap:10px;overflow-y:auto;max-height:360px;}
+.wamsg{max-width:78%;padding:10px 13px;border-radius:12px;font-size:13px;line-height:1.55;}
+.wamsg.bot{background:#1F2C34;color:#E1E8ED;border-radius:4px 12px 12px 12px;align-self:flex-start;}
+.wamsg.usr{background:#005C4B;color:#E1E8ED;border-radius:12px 4px 12px 12px;align-self:flex-end;}
+.wmt{font-size:9px;color:#8696A0;margin-top:4px;}
+.wa-inp-row{padding:10px 16px;background:#1F2C34;display:flex;gap:8px;align-items:center;}
+.wa-inp{flex:1;background:#2A3942;border:none;border-radius:20px;padding:9px 16px;color:#E1E8ED;font-size:13px;outline:none;}
+.wa-inp::placeholder{color:#8696A0;}
+.wa-send{width:38px;height:38px;background:#00A884;border:none;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+/* Loan bank row */
+.lbr{display:flex;align-items:center;gap:11px;padding:10px 0;border-bottom:1px solid #2A2D37;}
+.lbr:last-child{border-bottom:none;}
+.lbd{width:7px;height:7px;border-radius:50%;background:#F59E0B;flex-shrink:0;}
+
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:#111318;}
+::-webkit-scrollbar-thumb{background:#272931;border-radius:2px;}
+</style>
+</head>
+<body>
+
+<!-- ═══ LOGIN ═══ -->
+<div id="s-login" class="screen on">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="login-sun">&#9728;&#65039;</div>
+      <div>
+        <div class="login-brand">SuryaERP</div>
+        <div class="login-sub">Solar EPC Platform</div>
+      </div>
+    </div>
+    <div class="login-title">Welcome back</div>
+    <div class="login-hint">Click your role to sign in instantly</div>
+
+    <button class="role-btn" onclick="go('admin')">
+      <span class="role-ico">&#128081;</span>
+      <div><div class="role-name">Admin / Owner</div><div class="role-cred">Full access to all modules</div></div>
+    </button>
+    <button class="role-btn" onclick="go('ops')">
+      <span class="role-ico">&#128295;</span>
+      <div><div class="role-name">Operations Manager</div><div class="role-cred">Projects, installation, monitoring</div></div>
+    </button>
+    <button class="role-btn" onclick="go('sales')">
+      <span class="role-ico">&#128202;</span>
+      <div><div class="role-name">Sales Manager</div><div class="role-cred">Leads, pipeline, proposals</div></div>
+    </button>
+    <button class="role-btn" onclick="go('finance')">
+      <span class="role-ico">&#128176;</span>
+      <div><div class="role-name">Finance Manager</div><div class="role-cred">Loans, commissions, payments</div></div>
+    </button>
+    <button class="role-btn customer" onclick="go('customer')">
+      <span class="role-ico">&#9728;&#65039;</span>
+      <div><div class="role-name">Customer Portal</div><div class="role-cred">View my system, generation & savings</div></div>
+    </button>
+  </div>
+</div>
+
+<!-- ═══ ADMIN PORTAL ═══ -->
+<div id="s-admin" class="screen">
+
+  <aside id="sidebar">
+    <div class="sb-top">
+      <div class="sb-logo">
+        <div class="sb-sun">&#9728;&#65039;</div>
+        <div><div class="sb-name">SuryaERP</div><div class="sb-tag">Command Centre</div></div>
+      </div>
+    </div>
+    <div class="sb-sec">
+      <div class="sb-lbl">Overview</div>
+      <button class="sb-btn on" data-p="dashboard" onclick="nav(this)"><span class="sb-ico">&#9632;</span>Dashboard</button>
+    </div>
+    <div class="sb-sec">
+      <div class="sb-lbl">CRM & Sales</div>
+      <button class="sb-btn" data-p="leads" onclick="nav(this)"><span class="sb-ico">&#128229;</span>Lead Capture<span class="sb-badge">12</span></button>
+      <button class="sb-btn" data-p="pipeline" onclick="nav(this)"><span class="sb-ico">&#128202;</span>Sales Pipeline</button>
+      <button class="sb-btn" data-p="proposals" onclick="nav(this)"><span class="sb-ico">&#128196;</span>Proposals<span class="sb-badge a">5</span></button>
+      <button class="sb-btn" data-p="whatsapp" onclick="nav(this)"><span class="sb-ico">&#128172;</span>WhatsApp Leads</button>
+    </div>
+    <div class="sb-sec">
+      <div class="sb-lbl">Operations</div>
+      <button class="sb-btn" data-p="rooftop" onclick="nav(this)"><span class="sb-ico">&#128752;</span>AI Rooftop Analysis</button>
+      <button class="sb-btn" data-p="projects" onclick="nav(this)"><span class="sb-ico">&#128295;</span>Projects<span class="sb-badge">3</span></button>
+      <button class="sb-btn" data-p="subsidy" onclick="nav(this)"><span class="sb-ico">&#127963;</span>Subsidy Tracking</button>
+      <button class="sb-btn" data-p="monitoring" onclick="nav(this)"><span class="sb-ico">&#128225;</span>System Monitor</button>
+    </div>
+    <div class="sb-sec">
+      <div class="sb-lbl">Team & Finance</div>
+      <button class="sb-btn" data-p="agents" onclick="nav(this)"><span class="sb-ico">&#128101;</span>Agents & Commission</button>
+      <button class="sb-btn" data-p="finance" onclick="nav(this)"><span class="sb-ico">&#128176;</span>Loans & Finance</button>
+    </div>
+    <div class="sb-foot">
+      <div class="sb-user">
+        <div class="sb-av" id="sb-av">RK</div>
+        <div><div class="sb-uname" id="sb-nm">Rajesh Kumar</div><div class="sb-urole" id="sb-rl">Super Admin</div></div>
+      </div>
+      <button class="sb-out" onclick="signout()">Sign out</button>
+    </div>
+  </aside>
+
+  <main id="admin-main">
+    <header class="topbar">
+      <span class="tb-title" id="atitle">Dashboard</span>
+      <div style="display:flex;align-items:center;gap:10px">
+        <button class="tb-btn" onclick="openModal('lead')">+ New Lead</button>
+      </div>
+    </header>
+
+    <!-- DASHBOARD -->
+    <section class="apage on" id="ap-dashboard">
+      <div class="alert aw">&#9889; <strong>3 systems underperforming</strong> &mdash; generation &lt;70% today. <span class="aa" onclick="nav(document.querySelector('[data-p=monitoring]'))">View &rarr;</span></div>
+      <div class="krow k4">
+        <div class="kcard"><div class="k-lbl">Total Leads</div><div class="k-val">847</div><div class="k-delta up">&#8593; 23 this week</div></div>
+        <div class="kcard g"><div class="k-lbl">Live Systems</div><div class="k-val">312</div><div class="k-delta up">&#8593; 18 this month</div></div>
+        <div class="kcard b"><div class="k-lbl">In Progress</div><div class="k-val">64</div><div class="k-delta">Survey + Install</div></div>
+        <div class="kcard p"><div class="k-lbl">Subsidy Pending</div><div class="k-val" style="font-size:21px">&#8377;48L</div><div class="k-delta dn">89 applications</div></div>
+      </div>
+      <div class="g75" style="margin-bottom:16px">
+        <div class="panel">
+          <div class="ph"><div><div class="ph-t">Monthly installations &mdash; 2025</div><div class="ph-s">Target: 40/month</div></div><span style="font-size:11px;color:#52566A">1.68 MW total</span></div>
+          <div class="pb">
+            <div class="bchart" id="dash-chart"></div>
+            <div class="sr">
+              <div><div class="srv">312</div><div class="srl">Total 2025</div></div>
+              <div><div class="srv" style="color:#10B981">34</div><div class="srl">Avg/month</div></div>
+              <div><div class="srv" style="color:#F59E0B">&#8377;8.4Cr</div><div class="srl">Revenue</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="ph"><div class="ph-t">Live activity</div></div>
+          <div class="pb">
+            <div class="tl">
+              <div class="tli"><div class="tll"><div class="tld"></div><div class="tlln"></div></div><div><div class="tlt">New lead &mdash; Priya Sharma, Pune</div><div class="tlm">2 min &middot; WhatsApp &middot; 5 kW</div></div></div>
+              <div class="tli"><div class="tll"><div class="tld g"></div><div class="tlln"></div></div><div><div class="tlt">System live &mdash; Mohan Lal, Jaipur</div><div class="tlm">1 hr &middot; 3 kW Growatt</div></div></div>
+              <div class="tli"><div class="tll"><div class="tld b"></div><div class="tlln"></div></div><div><div class="tlt">Subsidy credited &mdash; &#8377;54,000</div><div class="tlm">3 hrs &middot; Ramesh Gupta</div></div></div>
+              <div class="tli"><div class="tll"><div class="tld"></div><div class="tlln"></div></div><div><div class="tlt">Proposal sent &mdash; Anita Desai</div><div class="tlm">5 hrs &middot; 7 kW &middot; &#8377;3.2L</div></div></div>
+              <div class="tli"><div class="tll"><div class="tld d"></div><div class="tlln"></div></div><div><div class="tlt">HDFC loan approved &mdash; &#8377;1.76L</div><div class="tlm">Yesterday &middot; Ramesh Jain</div></div></div>
+              <div class="tli"><div class="tll"><div class="tld"></div></div><div><div class="tlt">Site survey &mdash; Deepak Rao</div><div class="tlm">Yesterday &middot; Vijay K.</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="g2">
+        <div class="panel">
+          <div class="ph"><div class="ph-t">Top agents &mdash; this month</div></div>
+          <div class="pb">
+            <div class="mitem"><span class="mn">Vijay Kumar &middot; Pune</span><div class="mbar"><div class="pt"><div class="pf" style="width:90%"></div></div></div><span class="mv" style="color:#10B981">9</span></div>
+            <div class="mitem"><span class="mn">Meena Joshi &middot; Nashik</span><div class="mbar"><div class="pt"><div class="pf" style="width:70%"></div></div></div><span class="mv">7</span></div>
+            <div class="mitem"><span class="mn">Arun Singh &middot; Nagpur</span><div class="mbar"><div class="pt"><div class="pf" style="width:60%"></div></div></div><span class="mv">6</span></div>
+            <div class="mitem"><span class="mn">Deepa Rao &middot; Kolhapur</span><div class="mbar"><div class="pt"><div class="pf" style="width:50%"></div></div></div><span class="mv">5</span></div>
+            <div class="mitem"><span class="mn">Rohit Shah &middot; Aurangabad</span><div class="mbar"><div class="pt"><div class="pf" style="width:30%"></div></div></div><span class="mv">3</span></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="ph"><div class="ph-t">Subsidy pipeline</div></div>
+          <div class="pb">
+            <div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:12px">Registered</span><span style="font-size:12px;font-weight:700">312</span></div><div class="pt"><div class="pf" style="width:100%"></div></div></div>
+            <div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:12px">DISCOM approved</span><span style="font-size:12px;font-weight:700">248</span></div><div class="pt"><div class="pf pfg" style="width:79%"></div></div></div>
+            <div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:12px">Net meter done</span><span style="font-size:12px;font-weight:700">198</span></div><div class="pt"><div class="pf pfb" style="width:63%"></div></div></div>
+            <div><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:12px">Subsidy credited</span><span style="font-size:12px;font-weight:700">156</span></div><div class="pt"><div class="pf pfp" style="width:50%"></div></div></div>
+            <div class="sr"><div><div class="srv" style="color:#10B981;font-size:17px">&#8377;84L</div><div class="srl">Credited</div></div><div><div class="srv" style="color:#F59E0B;font-size:17px">&#8377;48L</div><div class="srl">Pending</div></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LEADS -->
+    <section class="apage" id="ap-leads">
+      <div class="krow k3">
+        <div class="kcard"><div class="k-lbl">New this week</div><div class="k-val" style="font-size:21px">23</div><div class="k-delta up">&#8593; 4 vs last week</div></div>
+        <div class="kcard g"><div class="k-lbl">Conversion rate</div><div class="k-val" style="font-size:21px">38%</div><div class="k-delta up">&#8593; 3% this month</div></div>
+        <div class="kcard b"><div class="k-lbl">Avg close time</div><div class="k-val" style="font-size:21px">11d</div><div class="k-delta">Lead &rarr; install</div></div>
+      </div>
+      <div class="panel">
+        <div class="ph"><div class="ph-t">All leads</div><div style="display:flex;gap:8px"><select class="fsel"><option>All status</option><option>New</option><option>Quoted</option><option>Won</option><option>Lost</option></select><select class="fsel"><option>All sources</option><option>WhatsApp</option><option>Website</option><option>Agent</option></select><button class="tb-btn btn-sm" onclick="openModal('lead')">+ Add</button></div></div>
+        <div class="tw"><table><thead><tr><th>Customer</th><th>Location</th><th>Units/mo</th><th>Size</th><th>Source</th><th>Agent</th><th>Status</th><th>Date</th></tr></thead><tbody id="leads-tbody"></tbody></table></div>
+      </div>
+    </section>
+
+    <!-- PIPELINE -->
+    <section class="apage" id="ap-pipeline">
+      <div class="krow k4">
+        <div class="kcard"><div class="k-lbl">New</div><div class="k-val" style="font-size:21px">127</div></div>
+        <div class="kcard b"><div class="k-lbl">Quoted</div><div class="k-val" style="font-size:21px">64</div><div class="k-delta">&#8377;2.1Cr</div></div>
+        <div class="kcard g"><div class="k-lbl">Won</div><div class="k-val" style="font-size:21px">312</div><div class="k-delta up">&#8377;8.4Cr</div></div>
+        <div class="kcard r"><div class="k-lbl">Lost</div><div class="k-val" style="font-size:21px">89</div></div>
+      </div>
+      <div class="kanban" id="kanban"></div>
+    </section>
+
+    <!-- PROPOSALS -->
+    <section class="apage" id="ap-proposals">
+      <div class="panel"><div class="ph"><div class="ph-t">Proposals</div><button class="tb-btn btn-sm" onclick="nav(document.querySelector('[data-p=rooftop]'))">Generate via AI</button></div>
+      <div class="tw"><table><thead><tr><th>Customer</th><th>System</th><th>Cost</th><th>Subsidy</th><th>Payable</th><th>Payback</th><th>Status</th></tr></thead><tbody>
+        <tr><td><div class="tdp">Anita Desai</div><div class="tds">Mumbai</div></td><td>7 kW &middot; 19 panels</td><td>&#8377;3,22,000</td><td>&#8377;78,000</td><td>&#8377;2,44,000</td><td>4.1 yrs</td><td><span class="badge bn">Awaiting reply</span></td></tr>
+        <tr><td><div class="tdp">Ramesh Jain</div><div class="tds">Pune</div></td><td>5 kW &middot; 14 panels</td><td>&#8377;2,30,000</td><td>&#8377;54,000</td><td>&#8377;1,76,000</td><td>3.9 yrs</td><td><span class="badge bw">Accepted &#10003;</span></td></tr>
+        <tr><td><div class="tdp">Vinod Tiwari</div><div class="tds">Indore</div></td><td>10 kW &middot; 27 panels</td><td>&#8377;4,60,000</td><td>&#8377;78,000</td><td>&#8377;3,82,000</td><td>4.8 yrs</td><td><span class="badge bw">Accepted &#10003;</span></td></tr>
+        <tr><td><div class="tdp">Sushila Mehta</div><div class="tds">Jaipur</div></td><td>3 kW &middot; 8 panels</td><td>&#8377;1,38,000</td><td>&#8377;30,000</td><td>&#8377;1,08,000</td><td>4.4 yrs</td><td><span class="badge bq">Negotiating</span></td></tr>
+      </tbody></table></div></div>
+    </section>
+
+    <!-- WHATSAPP -->
+    <section class="apage" id="ap-whatsapp">
+      <div class="krow k4">
+        <div class="kcard g"><div class="k-lbl">Total via WhatsApp</div><div class="k-val" style="font-size:21px">847</div></div>
+        <div class="kcard"><div class="k-lbl">Converted</div><div class="k-val" style="font-size:21px">312</div></div>
+        <div class="kcard b"><div class="k-lbl">New today</div><div class="k-val" style="font-size:21px">23</div></div>
+        <div class="kcard p"><div class="k-lbl">Bot response</div><div class="k-val" style="font-size:21px">4.2s</div></div>
+      </div>
+      <div class="g2">
+        <div class="wa-flow">
+          <div class="wa-head"><div class="wa-head-ico">&#9728;&#65039;</div><div><div class="wa-head-name">SuryaSolar Assistant</div><div class="wa-head-sub">Powered by WATI API &middot; Online</div></div></div>
+          <div class="wa-chat" id="wa-chat">
+            <div class="wamsg bot">Namaste! Welcome to SuryaSolar.<br><br>I can help you get a <strong>FREE solar assessment</strong>.<br><br>Reply with your <strong>city</strong> to get started!<div class="wmt">SuryaSolar &middot; Just now</div></div>
+          </div>
+          <div class="wa-inp-row"><input class="wa-inp" id="wa-inp" placeholder="Type your city (e.g. Pune)..." onkeydown="if(event.key==='Enter')waSend()"><button class="wa-send" onclick="waSend()">&#10148;</button></div>
+        </div>
+        <div class="panel"><div class="ph"><div class="ph-t">Chatbot flow</div></div><div class="pb">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="background:#1F2128;border-left:3px solid #3B82F6;padding:10px 13px;border-radius:0 7px 7px 0"><div style="font-size:9px;font-family:monospace;color:#3B82F6;margin-bottom:3px">STEP 01</div><div style="font-size:13px;font-weight:600">City ask</div><div style="font-size:11px;color:#8B8FA0;margin-top:2px">Bot greets, asks for city</div></div>
+            <div style="background:#1F2128;border-left:3px solid #3B82F6;padding:10px 13px;border-radius:0 7px 7px 0"><div style="font-size:9px;font-family:monospace;color:#3B82F6;margin-bottom:3px">STEP 02</div><div style="font-size:13px;font-weight:600">Bill photo OCR</div><div style="font-size:11px;color:#8B8FA0;margin-top:2px">Google Vision extracts units + DISCOM</div></div>
+            <div style="background:#1F2128;border-left:3px solid #F59E0B;padding:10px 13px;border-radius:0 7px 7px 0"><div style="font-size:9px;font-family:monospace;color:#F59E0B;margin-bottom:3px">STEP 03</div><div style="font-size:13px;font-weight:600">Address entry</div><div style="font-size:11px;color:#8B8FA0;margin-top:2px">Full address for rooftop analysis</div></div>
+            <div style="background:#1F2128;border-left:3px solid #F59E0B;padding:10px 13px;border-radius:0 7px 7px 0"><div style="font-size:9px;font-family:monospace;color:#F59E0B;margin-bottom:3px">STEP 04</div><div style="font-size:13px;font-weight:600">AI proposal generated</div><div style="font-size:11px;color:#8B8FA0;margin-top:2px">PDF sent on WhatsApp in 60 seconds</div></div>
+            <div style="background:#1F2128;border-left:3px solid #10B981;padding:10px 13px;border-radius:0 7px 7px 0"><div style="font-size:9px;font-family:monospace;color:#10B981;margin-bottom:3px">STEP 05</div><div style="font-size:13px;font-weight:600">Lead pushed to CRM</div><div style="font-size:11px;color:#8B8FA0;margin-top:2px">Auto-assigned to nearest agent</div></div>
+          </div>
+        </div></div>
+      </div>
+    </section>
+
+    <!-- AI ROOFTOP -->
+    <section class="apage" id="ap-rooftop">
+      <div class="alert ai">&#128752; <strong>AI Rooftop Analysis</strong> &mdash; Enter address to auto-generate system size, layout and financial proposal.</div>
+      <div class="g2">
+        <div>
+          <div class="panel"><div class="ph"><div class="ph-t">Customer details</div></div><div class="pb">
+            <div class="fgrid" style="margin-bottom:14px">
+              <div class="fg"><label>Customer name</label><input type="text" id="ai-name" value="Priya Sharma"></div>
+              <div class="fg"><label>Mobile</label><input type="text" id="ai-mobile" value="+91 98201 55432"></div>
+              <div class="fg full"><label>Full address</label><input type="text" id="ai-addr" value="12 Prabhat Road, Koregaon Park, Pune 411001"></div>
+              <div class="fg"><label>Monthly units (kWh)</label><input type="number" id="ai-units" value="420"></div>
+              <div class="fg"><label>Roof type</label><select><option>RCC Flat</option><option>Mangalore tile</option><option>Metal sheet</option></select></div>
+              <div class="fg"><label>DISCOM</label><select><option>MSEDCL</option><option>JVVNL</option><option>DGVCL</option><option>BESCOM</option></select></div>
+            </div>
+            <button onclick="runAI()" style="width:100%;height:44px;background:#F59E0B;color:#000;border:none;border-radius:9px;font-size:14px;font-weight:800;cursor:pointer" id="ai-btn">&#128752; Analyse Rooftop &amp; Generate Proposal</button>
+            <div id="ai-loading" style="display:none;text-align:center;padding:20px;color:#8B8FA0"><span class="spin"></span><span id="ai-txt">Fetching satellite imagery...</span></div>
+          </div></div>
+          <div class="ai-result" id="ai-result">
+            <div style="font-size:14px;font-weight:800;color:#F59E0B;margin-bottom:14px">&#10003; Analysis complete &mdash; Priya Sharma, Pune</div>
+            <div class="ai-grid">
+              <div><div class="ai-v" style="color:#F59E0B">5 kW</div><div class="ai-l">System size</div></div>
+              <div><div class="ai-v">14 panels</div><div class="ai-l">370W each</div></div>
+              <div><div class="ai-v">34 m&#178;</div><div class="ai-l">Usable roof</div></div>
+              <div><div class="ai-v" style="color:#10B981">7,320 kWh</div><div class="ai-l">Annual gen.</div></div>
+              <div><div class="ai-v">95%</div><div class="ai-l">Performance</div></div>
+              <div><div class="ai-v" style="color:#3B82F6">3.8t CO&#8322;</div><div class="ai-l">Annual saving</div></div>
+            </div>
+            <div class="ai-prop">
+              <div style="font-size:12px;font-weight:700;color:#F59E0B;margin-bottom:10px">Financial proposal</div>
+              <div class="ai-prop-row"><span style="color:#8B8FA0">System cost</span><span style="font-weight:700">&#8377;2,30,000</span></div>
+              <div class="ai-prop-row"><span style="color:#8B8FA0">PM Surya Ghar subsidy</span><span style="font-weight:700;color:#10B981">&#8722; &#8377;54,000</span></div>
+              <div class="ai-prop-row"><span style="color:#8B8FA0">Customer payable</span><span style="font-weight:700;color:#F59E0B">&#8377;1,76,000</span></div>
+              <div class="ai-prop-row"><span style="color:#8B8FA0">Monthly savings</span><span style="font-weight:700;color:#10B981">&#8377;3,660/mo</span></div>
+              <div class="ai-prop-row"><span style="color:#8B8FA0">Payback period</span><span style="font-weight:700">3.9 years</span></div>
+              <div class="ai-prop-row"><span style="color:#8B8FA0">25-year return</span><span style="font-weight:700;color:#10B981">&#8377;10.4L</span></div>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:12px">
+              <button style="height:34px;padding:0 14px;background:#F59E0B;color:#000;border:none;border-radius:8px;font-size:12.5px;font-weight:700;cursor:pointer">Send on WhatsApp</button>
+              <button style="height:34px;padding:0 14px;background:#1F2128;border:1px solid #2A2D37;color:#EEEEF0;border-radius:8px;font-size:12.5px;cursor:pointer">Download PDF</button>
+            </div>
+          </div>
+        </div>
+        <div class="panel"><div class="ph"><div class="ph-t">How it works</div></div><div class="pb">
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="background:#1F2128;border-left:3px solid #3B82F6;padding:10px 13px;border-radius:0 7px 7px 0"><div style="font-size:9px;font-family:monospace;color:#3B82F6;margin-bottom:3px">Google Maps API</div><div style="font-size:13px;font-weight:600">Address to GPS</div><div style="font-size:11px;color:#8B8FA0">Geocode address in under 1 second</div></div>
+            <div style="background:#1F2128;border-left:3px solid #3B82F6;padding:10px 13px;border-radius:0 7px 7px 0"><div style="font-size:9px;font-family:monospace;color:#3B82F6;margin-bottom:3px">Satellite imagery</div><div style="font-size:13px;font-weight:600">Pull roof image</div><div style="font-size:11px;color:#8B8FA0">Google Maps Static API</div></div>
+            <div style="background:#1F2128;border-left:3px solid #F59E0B;padding:10px 13px;border-radius:0 7px 7px 0"><div style="font-size:9px;font-family:monospace;color:#F59E0B;margin-bottom:3px">Aurora Solar API</div><div style="font-size:13px;font-weight:600">Roof detection AI</div><div style="font-size:11px;color:#8B8FA0">Detects usable area, shading</div></div>
+            <div style="background:#1F2128;border-left:3px solid #F59E0B;padding:10px 13px;border-radius:0 7px 7px 0"><div style="font-size:9px;font-family:monospace;color:#F59E0B;margin-bottom:3px">pvlib simulation</div><div style="font-size:13px;font-weight:600">Energy model</div><div style="font-size:11px;color:#8B8FA0">20 years of India irradiance data</div></div>
+            <div style="background:#1F2128;border-left:3px solid #10B981;padding:10px 13px;border-radius:0 7px 7px 0"><div style="font-size:9px;font-family:monospace;color:#10B981;margin-bottom:3px">Custom engine</div><div style="font-size:13px;font-weight:600">Financial proposal</div><div style="font-size:11px;color:#8B8FA0">Cost, subsidy, payback, 25yr savings</div></div>
+          </div>
+        </div></div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section class="apage" id="ap-projects">
+      <div class="krow k4">
+        <div class="kcard"><div class="k-lbl">Survey Pending</div><div class="k-val" style="font-size:21px">18</div></div>
+        <div class="kcard b"><div class="k-lbl">Installing</div><div class="k-val" style="font-size:21px">31</div></div>
+        <div class="kcard g"><div class="k-lbl">Done this month</div><div class="k-val" style="font-size:21px">18</div><div class="k-delta up">&#8593; 2</div></div>
+        <div class="kcard o"><div class="k-lbl">Net Meter Pending</div><div class="k-val" style="font-size:21px">15</div></div>
+      </div>
+      <div class="panel"><div class="ph"><div class="ph-t">Active projects</div><div style="display:flex;gap:8px"><select class="fsel"><option>All stages</option><option>Survey</option><option>Installation</option><option>Live</option></select></div></div>
+      <div class="tw"><table><thead><tr><th>Customer</th><th>Location</th><th>System</th><th>Team</th><th>Survey</th><th>Install</th><th>Stage</th><th></th></tr></thead><tbody>
+        <tr><td><div class="tdp">Ramesh Jain</div><div class="tdm">PRJ-2847</div></td><td>Viman Nagar, Pune</td><td>5 kW Growatt</td><td>Team A &mdash; Suresh</td><td>Mar 10</td><td>Mar 17</td><td><span class="badge bq">Installing</span></td><td><button class="btn-ghost btn-sm">Update</button></td></tr>
+        <tr><td><div class="tdp">Vinod Tiwari</div><div class="tdm">PRJ-2848</div></td><td>Indore</td><td>10 kW Sungrow</td><td>Team B &mdash; Ravi</td><td>Mar 12</td><td>Mar 20</td><td><span class="badge bn">Survey done</span></td><td><button class="btn-ghost btn-sm">Update</button></td></tr>
+        <tr><td><div class="tdp">Priya Sharma</div><div class="tdm">PRJ-2849</div></td><td>Koregaon Park, Pune</td><td>7 kW GoodWe</td><td>Team A &mdash; Suresh</td><td>Mar 14</td><td>Mar 22</td><td><span class="badge bn">Survey sched.</span></td><td><button class="btn-ghost btn-sm">Update</button></td></tr>
+        <tr><td><div class="tdp">Mohan Lal</div><div class="tdm">PRJ-2835</div></td><td>Vaishali Nagar, Jaipur</td><td>3 kW Growatt</td><td>Team C &mdash; Amit</td><td>Feb 28</td><td>Mar 5</td><td><span class="badge bw">Live &#10003;</span></td><td><button class="btn-ghost btn-sm">View</button></td></tr>
+      </tbody></table></div></div>
+    </section>
+
+    <!-- SUBSIDY -->
+    <section class="apage" id="ap-subsidy">
+      <div class="subpipe">
+        <div class="spstage on"><div class="spn">01</div><div class="spname">Registered</div><div class="spval" style="color:#F59E0B">312</div><div class="splbl">Applications</div><div class="sparr">&#9658;</div></div>
+        <div class="spstage"><div class="spn">02</div><div class="spname">DISCOM Approved</div><div class="spval" style="color:#3B82F6">248</div><div class="splbl">Avg 8 days</div><div class="sparr">&#9658;</div></div>
+        <div class="spstage"><div class="spn">03</div><div class="spname">Net Meter Done</div><div class="spval" style="color:#10B981">198</div><div class="splbl">Avg 30 days</div><div class="sparr">&#9658;</div></div>
+        <div class="spstage"><div class="spn">04</div><div class="spname">Subsidy Credited</div><div class="spval" style="color:#8B5CF6">156</div><div class="splbl">Avg 75 days</div></div>
+      </div>
+      <div class="panel"><div class="ph"><div class="ph-t">Subsidy tracker</div><div style="display:flex;gap:8px"><select class="fsel"><option>All status</option><option>Pending</option><option>Approved</option><option>Credited</option></select><button class="btn-ghost">Export CSV</button></div></div>
+      <div class="tw"><table><thead><tr><th>Customer</th><th>App ID</th><th>kW</th><th>DISCOM</th><th>Applied</th><th>DISCOM Appr.</th><th>Net Meter</th><th>Amount</th><th>Status</th></tr></thead><tbody>
+        <tr><td><div class="tdp">Mohan Lal</div><div class="tds">Jaipur</div></td><td class="tdm">PSG-2024-8821</td><td>3 kW</td><td>JVVNL</td><td>Feb 20</td><td>Feb 28</td><td>Mar 5</td><td style="color:#10B981;font-weight:700">&#8377;30,000</td><td><span class="badge bcr">Credited &#10003;</span></td></tr>
+        <tr><td><div class="tdp">Sunita Rao</div><div class="tds">Nagpur</div></td><td class="tdm">PSG-2024-8847</td><td>5 kW</td><td>MSEDCL</td><td>Feb 25</td><td>Mar 4</td><td>Mar 10</td><td style="font-weight:700">&#8377;54,000</td><td><span class="badge bw">Approved</span></td></tr>
+        <tr><td><div class="tdp">Ramesh Gupta</div><div class="tds">Ahmedabad</div></td><td class="tdm">PSG-2024-8902</td><td>7 kW</td><td>DGVCL</td><td>Mar 1</td><td>Mar 9</td><td>Scheduled</td><td style="font-weight:700">&#8377;78,000</td><td><span class="badge bw">Net meter pending</span></td></tr>
+        <tr><td><div class="tdp">Priya Sharma</div><div class="tds">Pune</div></td><td class="tdm">PSG-2024-8934</td><td>5 kW</td><td>MSEDCL</td><td>Mar 5</td><td>&mdash;</td><td>&mdash;</td><td style="font-weight:700">&#8377;54,000</td><td><span class="badge bp">DISCOM pending</span></td></tr>
+      </tbody></table></div></div>
+    </section>
+
+    <!-- MONITORING -->
+    <section class="apage" id="ap-monitoring">
+      <div class="alert ad">&#9888; <strong>3 systems offline</strong> &mdash; No data for 6+ hours. Tickets raised.</div>
+      <div class="krow k4">
+        <div class="kcard g"><div class="k-lbl">Online</div><div class="k-val">309</div><div class="k-delta up">99.0% uptime</div></div>
+        <div class="kcard r"><div class="k-lbl">Offline</div><div class="k-val">3</div></div>
+        <div class="kcard b"><div class="k-lbl">Today Gen.</div><div class="k-val" style="font-size:21px">4.8 MWh</div></div>
+        <div class="kcard o"><div class="k-lbl">Underperforming</div><div class="k-val">11</div><div class="k-delta dn">&lt;70%</div></div>
+      </div>
+      <div class="panel"><div class="ph"><div class="ph-t">Live performance</div><div class="ph-s">Refreshes every 5 min</div></div>
+      <div class="tw"><table><thead><tr><th>System ID</th><th>Customer</th><th>Location</th><th>Inverter</th><th>Cap.</th><th>Today kWh</th><th>Expected</th><th>Performance</th><th>Status</th></tr></thead><tbody>
+        <tr><td class="tdm">SYS-001</td><td>Mohan Lal</td><td>Jaipur</td><td>Growatt 3kW</td><td>3 kW</td><td>14.2</td><td>15.0</td><td><div class="pfbar"><div class="pftrack"><div class="pffill" style="width:95%;background:#10B981"></div></div><span style="font-size:11px;font-weight:700;color:#10B981;min-width:30px;text-align:right">95%</span></div></td><td><span class="badge bw"><span class="ldot"></span>Online</span></td></tr>
+        <tr><td class="tdm">SYS-047</td><td>Deepak Mehta</td><td>Nashik</td><td>Growatt 5kW</td><td>5 kW</td><td>11.4</td><td>24.5</td><td><div class="pfbar"><div class="pftrack"><div class="pffill" style="width:47%;background:#F97316"></div></div><span style="font-size:11px;font-weight:700;color:#F97316;min-width:30px;text-align:right">47%</span></div></td><td><span class="badge bq"><span class="ldot warn"></span>Underperf.</span></td></tr>
+        <tr><td class="tdm">SYS-089</td><td>Ravi Shankar</td><td>Pune</td><td>GoodWe 7kW</td><td>7 kW</td><td>0.0</td><td>34.3</td><td><div class="pfbar"><div class="pftrack"><div class="pffill" style="width:0%;background:#EF4444"></div></div><span style="font-size:11px;font-weight:700;color:#EF4444;min-width:30px;text-align:right">0%</span></div></td><td><span class="badge bl"><span class="ldot off"></span>Offline</span></td></tr>
+        <tr><td class="tdm">SYS-112</td><td>Arjun Das</td><td>Kolkata</td><td>Sungrow 3kW</td><td>3 kW</td><td>13.8</td><td>14.4</td><td><div class="pfbar"><div class="pftrack"><div class="pffill" style="width:96%;background:#10B981"></div></div><span style="font-size:11px;font-weight:700;color:#10B981;min-width:30px;text-align:right">96%</span></div></td><td><span class="badge bw"><span class="ldot"></span>Online</span></td></tr>
+      </tbody></table></div></div>
+    </section>
+
+    <!-- AGENTS -->
+    <section class="apage" id="ap-agents">
+      <div class="krow k4">
+        <div class="kcard"><div class="k-lbl">Active Agents</div><div class="k-val" style="font-size:21px">42</div></div>
+        <div class="kcard g"><div class="k-lbl">Leads (month)</div><div class="k-val" style="font-size:21px">187</div></div>
+        <div class="kcard b"><div class="k-lbl">Installs (month)</div><div class="k-val" style="font-size:21px">34</div></div>
+        <div class="kcard p"><div class="k-lbl">Commission Payable</div><div class="k-val" style="font-size:21px">&#8377;3.8L</div></div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <div><div style="font-size:15px;font-weight:800">Agent commission tracker</div><div style="font-size:11px;color:#52566A;margin-top:2px">&#8377;3,000 per install &middot; paid after system goes live</div></div>
+        <button class="tb-btn" onclick="openModal('agent')">+ Add Agent</button>
+      </div>
+      <div id="agents-list"></div>
+    </section>
+
+    <!-- FINANCE -->
+    <section class="apage" id="ap-finance">
+      <div class="krow k4">
+        <div class="kcard g"><div class="k-lbl">Sanctioned</div><div class="k-val" style="font-size:21px">128</div><div class="k-delta up">&#8377;8.4Cr</div></div>
+        <div class="kcard"><div class="k-lbl">Under Review</div><div class="k-val" style="font-size:21px">47</div></div>
+        <div class="kcard b"><div class="k-lbl">Avg Loan</div><div class="k-val" style="font-size:21px">&#8377;1.7L</div></div>
+        <div class="kcard p"><div class="k-lbl">Avg Rate</div><div class="k-val" style="font-size:21px">7.2%</div></div>
+      </div>
+      <div class="g2">
+        <div class="panel"><div class="ph"><div class="ph-t">Loan applications</div></div>
+        <div class="tw"><table><thead><tr><th>Customer</th><th>Bank</th><th>Amount</th><th>Applied</th><th>Status</th></tr></thead><tbody>
+          <tr><td><div class="tdp">Anita Desai</div></td><td>SBI Solar</td><td>&#8377;2,44,000</td><td>Mar 12</td><td><span class="badge bp">Under review</span></td></tr>
+          <tr><td><div class="tdp">Ramesh Jain</div></td><td>HDFC Bank</td><td>&#8377;1,76,000</td><td>Mar 9</td><td><span class="badge bw">Sanctioned &#10003;</span></td></tr>
+          <tr><td><div class="tdp">Vinod Tiwari</div></td><td>PNB Solar</td><td>&#8377;3,82,000</td><td>Mar 8</td><td><span class="badge bw">Sanctioned &#10003;</span></td></tr>
+        </tbody></table></div></div>
+        <div class="panel"><div class="ph"><div class="ph-t">Bank performance</div></div><div class="pb">
+          <div class="lbr"><div class="lbd"></div><div style="flex:1;font-size:13px;font-weight:600">SBI Solar Loan</div><div style="font-size:11px;color:#8B8FA0">52 &middot; 5d avg</div><div style="color:#10B981;font-weight:700">&#8377;3.1Cr</div></div>
+          <div class="lbr"><div class="lbd" style="background:#3B82F6"></div><div style="flex:1;font-size:13px;font-weight:600">HDFC Bank</div><div style="font-size:11px;color:#8B8FA0">36 &middot; 3d avg</div><div style="color:#10B981;font-weight:700">&#8377;2.2Cr</div></div>
+          <div class="lbr"><div class="lbd" style="background:#10B981"></div><div style="flex:1;font-size:13px;font-weight:600">PNB Solar</div><div style="font-size:11px;color:#8B8FA0">22 &middot; 7d avg</div><div style="color:#10B981;font-weight:700">&#8377;1.8Cr</div></div>
+          <div class="lbr"><div class="lbd" style="background:#8B5CF6"></div><div style="flex:1;font-size:13px;font-weight:600">Bank of Baroda</div><div style="font-size:11px;color:#8B8FA0">18 &middot; 6d avg</div><div style="color:#10B981;font-weight:700">&#8377;1.3Cr</div></div>
+        </div></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- ═══ CUSTOMER PORTAL ═══ -->
+<div id="s-customer" class="screen">
+  <nav class="cp-nav">
+    <div class="cp-logo"><div class="cp-sun">&#9728;&#65039;</div><div><div class="cp-brand">SuryaSolar</div><div class="cp-sub">My Portal</div></div></div>
+    <div class="cp-tabs">
+      <button class="cp-tab on" data-cp="overview" onclick="cpnav(this)">My System</button>
+      <button class="cp-tab" data-cp="generation" onclick="cpnav(this)">Generation</button>
+      <button class="cp-tab" data-cp="subsidy" onclick="cpnav(this)">Subsidy</button>
+      <button class="cp-tab" data-cp="savings" onclick="cpnav(this)">Savings</button>
+      <button class="cp-tab" data-cp="service" onclick="cpnav(this)">Service</button>
+      <button class="cp-tab" data-cp="referral" onclick="cpnav(this)">Refer &amp; Earn</button>
+    </div>
+    <div class="cp-right">
+      <div class="cp-pill"><div class="cp-av" id="cp-av-el">PR</div><span class="cp-uname" id="cp-nm-el">Priya Sharma</span></div>
+      <button class="cp-out" onclick="signout()">Sign out</button>
+    </div>
+  </nav>
+  <div class="cp-body">
+
+    <!-- overview -->
+    <div class="cp-page on" id="cp-overview">
+      <div class="cp-hero">
+        <div>
+          <div class="cp-hw">Good morning, <span id="cp-fn">Priya</span>! &#9728;&#65039;</div>
+          <div class="cp-hsub">Your 5 kW system is performing excellently today</div>
+          <div class="cp-hstats">
+            <div><div class="cp-hv">5 kW</div><div class="cp-hl">System size</div></div>
+            <div><div class="cp-hv">Mar 5, 2025</div><div class="cp-hl">Installed</div></div>
+            <div><div class="cp-hv" style="color:#10B981">Online</div><div class="cp-hl">Status</div></div>
+          </div>
+        </div>
+        <div style="text-align:right">
+          <div class="cp-live-lbl">Generating right now</div>
+          <div class="cp-live">3.2 <span style="font-size:16px;color:#8B8FA0">kW</span></div>
+          <div class="cp-live-badge"><span style="width:7px;height:7px;border-radius:50%;background:#10B981;display:inline-block;animation:pulse 2s infinite"></span> LIVE</div>
+        </div>
+      </div>
+      <div class="cp-kgrid">
+        <div class="cp-kcard"><div class="cp-klbl">Today</div><div class="cp-kval">22.4 kWh</div><div class="cp-kdelta" style="color:#10B981">&#8593; 8% vs yesterday</div></div>
+        <div class="cp-kcard g"><div class="cp-klbl">This month</div><div class="cp-kval">312 kWh</div><div class="cp-kdelta" style="color:#10B981">&#8593; 12% vs last month</div></div>
+        <div class="cp-kcard b"><div class="cp-klbl">Lifetime</div><div class="cp-kval">1,847 kWh</div><div class="cp-kdelta">Since installation</div></div>
+        <div class="cp-kcard p"><div class="cp-klbl">Total savings</div><div class="cp-kval">&#8377;12,480</div><div class="cp-kdelta" style="color:#10B981">vs grid bill</div></div>
+      </div>
+      <div class="g2">
+        <div class="cp-panel"><div class="cp-ph"><span class="cp-pht">System details</span></div><div class="cp-pb">
+          <table style="min-width:unset;width:100%">
+            <tr><td style="padding:8px 0;border-bottom:1px solid #E4E6EC;font-size:12.5px;color:#6B7080">System ID</td><td style="padding:8px 0;border-bottom:1px solid #E4E6EC;font-size:12.5px;font-weight:600;text-align:right;color:#14151A">SYS-2849</td></tr>
+            <tr><td style="padding:8px 0;border-bottom:1px solid #E4E6EC;font-size:12.5px;color:#6B7080">Inverter</td><td style="padding:8px 0;border-bottom:1px solid #E4E6EC;font-size:12.5px;font-weight:600;text-align:right;color:#14151A">Growatt 5kW</td></tr>
+            <tr><td style="padding:8px 0;border-bottom:1px solid #E4E6EC;font-size:12.5px;color:#6B7080">Panels</td><td style="padding:8px 0;border-bottom:1px solid #E4E6EC;font-size:12.5px;font-weight:600;text-align:right;color:#14151A">14 x 370W Jinko</td></tr>
+            <tr><td style="padding:8px 0;border-bottom:1px solid #E4E6EC;font-size:12.5px;color:#6B7080">Performance</td><td style="padding:8px 0;border-bottom:1px solid #E4E6EC;font-size:12.5px;font-weight:600;text-align:right;color:#10B981">94%</td></tr>
+            <tr><td style="padding:8px 0;font-size:12.5px;color:#6B7080">Next service</td><td style="padding:8px 0;font-size:12.5px;font-weight:600;text-align:right;color:#14151A">Sep 2025</td></tr>
+          </table>
+        </div></div>
+        <div class="cp-panel"><div class="cp-ph"><span class="cp-pht">Recent activity</span></div><div class="cp-pb">
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;gap:10px"><div style="width:8px;height:8px;border-radius:50%;background:#10B981;flex-shrink:0;margin-top:4px"></div><div><div style="font-size:13px;font-weight:600;color:#14151A">Generation peak today</div><div style="font-size:11px;color:#6B7080">3.8 kW at 12:30 PM</div></div></div>
+            <div style="display:flex;gap:10px"><div style="width:8px;height:8px;border-radius:50%;background:#D97706;flex-shrink:0;margin-top:4px"></div><div><div style="font-size:13px;font-weight:600;color:#14151A">Subsidy update</div><div style="font-size:11px;color:#6B7080">Net meter inspection scheduled Mar 20</div></div></div>
+            <div style="display:flex;gap:10px"><div style="width:8px;height:8px;border-radius:50%;background:#3B82F6;flex-shrink:0;margin-top:4px"></div><div><div style="font-size:13px;font-weight:600;color:#14151A">Monthly report ready</div><div style="font-size:11px;color:#6B7080">February 2025 &mdash; 298 kWh</div></div></div>
+            <div style="display:flex;gap:10px"><div style="width:8px;height:8px;border-radius:50%;background:#CBD5E1;flex-shrink:0;margin-top:4px"></div><div><div style="font-size:13px;font-weight:600;color:#14151A">Installation complete</div><div style="font-size:11px;color:#6B7080">Mar 5, 2025 &mdash; System went live</div></div></div>
+          </div>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- generation -->
+    <div class="cp-page" id="cp-generation">
+      <div class="cp-panel" style="margin-bottom:16px"><div class="cp-ph"><span class="cp-pht">Daily generation &mdash; March 2025</span></div><div class="cp-pb">
+        <div class="cp-bchart" id="cp-chart"></div>
+        <div style="display:flex;gap:24px;margin-top:16px;padding-top:14px;border-top:1px solid #E4E6EC">
+          <div><div style="font-size:22px;font-weight:900;color:#14151A">312 kWh</div><div style="font-size:11px;color:#6B7080;text-transform:uppercase;letter-spacing:.5px">This month</div></div>
+          <div><div style="font-size:22px;font-weight:900;color:#10B981">22.3 kWh</div><div style="font-size:11px;color:#6B7080;text-transform:uppercase;letter-spacing:.5px">Daily avg</div></div>
+          <div><div style="font-size:22px;font-weight:900;color:#D97706">3.8 kW</div><div style="font-size:11px;color:#6B7080;text-transform:uppercase;letter-spacing:.5px">Peak today</div></div>
+          <div><div style="font-size:22px;font-weight:900;color:#3B82F6">94%</div><div style="font-size:11px;color:#6B7080;text-transform:uppercase;letter-spacing:.5px">Performance</div></div>
+        </div>
+      </div></div>
+      <div class="g2">
+        <div class="cp-panel"><div class="cp-ph"><span class="cp-pht">Monthly history</span></div><div class="cp-pb">
+          <table style="min-width:unset;width:100%"><thead><tr><th style="background:#F8F9FC;color:#6B7080">Month</th><th style="background:#F8F9FC;color:#6B7080">kWh</th><th style="background:#F8F9FC;color:#6B7080">Savings</th><th style="background:#F8F9FC;color:#6B7080">vs Target</th></tr></thead><tbody>
+            <tr style="background:none"><td style="color:#14151A">March 2025</td><td style="font-weight:700;color:#14151A">312</td><td style="color:#10B981;font-weight:600">&#8377;2,808</td><td style="color:#10B981">+6%</td></tr>
+            <tr style="background:none"><td style="color:#14151A">February 2025</td><td style="font-weight:700;color:#14151A">298</td><td style="color:#10B981;font-weight:600">&#8377;2,682</td><td style="color:#10B981">+2%</td></tr>
+            <tr style="background:none"><td style="color:#14151A">January 2025</td><td style="font-weight:700;color:#14151A">265</td><td style="color:#10B981;font-weight:600">&#8377;2,385</td><td style="color:#EF4444">-3%</td></tr>
+          </tbody></table>
+        </div></div>
+        <div class="cp-panel"><div class="cp-ph"><span class="cp-pht">Live inverter data</span></div><div class="cp-pb">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div style="background:#F8F9FC;border-radius:10px;padding:12px;text-align:center"><div style="font-size:20px;font-weight:900;color:#14151A">3.2 kW</div><div style="font-size:10.5px;color:#6B7080">AC output now</div></div>
+            <div style="background:#F8F9FC;border-radius:10px;padding:12px;text-align:center"><div style="font-size:20px;font-weight:900;color:#D97706">48.2 V</div><div style="font-size:10.5px;color:#6B7080">DC voltage</div></div>
+            <div style="background:#F8F9FC;border-radius:10px;padding:12px;text-align:center"><div style="font-size:20px;font-weight:900;color:#10B981">42&#176;C</div><div style="font-size:10.5px;color:#6B7080">Inverter temp</div></div>
+            <div style="background:#F8F9FC;border-radius:10px;padding:12px;text-align:center"><div style="font-size:20px;font-weight:900;color:#3B82F6">94%</div><div style="font-size:10.5px;color:#6B7080">Efficiency</div></div>
+          </div>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- subsidy -->
+    <div class="cp-page" id="cp-subsidy">
+      <div class="cp-panel" style="margin-bottom:16px"><div class="cp-ph"><span class="cp-pht">PM Surya Ghar subsidy status</span></div><div class="cp-pb">
+        <div class="cp-steps">
+          <div class="css done"><div class="css-n">STEP 01</div><div class="css-name">Application filed</div><div class="css-date">Mar 5, 2025</div><div class="css-st" style="color:#10B981">&#10003; Done</div><div class="css-arr">&#9658;</div></div>
+          <div class="css done"><div class="css-n">STEP 02</div><div class="css-name">DISCOM approval</div><div class="css-date">Mar 13, 2025</div><div class="css-st" style="color:#10B981">&#10003; Approved</div><div class="css-arr">&#9658;</div></div>
+          <div class="css act"><div class="css-n">STEP 03</div><div class="css-name">Net meter install</div><div class="css-date">Sched. Mar 20</div><div class="css-st" style="color:#D97706">&#8987; Scheduled</div><div class="css-arr">&#9658;</div></div>
+          <div class="css"><div class="css-n">STEP 04</div><div class="css-name">Subsidy credited</div><div class="css-date">Est. Apr 15</div><div class="css-st" style="color:#CBD5E1">Pending</div></div>
+        </div>
+        <div style="background:#FFFBEB;border:1px solid #FCD34D;border-radius:10px;padding:16px 20px">
+          <div style="font-size:13px;font-weight:700;color:#92400E;margin-bottom:6px">Your subsidy amount: <span style="font-size:18px;font-weight:900">&#8377;54,000</span></div>
+          <div style="font-size:12px;color:#92400E">App ID: <strong>PSG-2024-8934</strong> &middot; DISCOM: MSEDCL &middot; Expected: April 15, 2025</div>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- savings -->
+    <div class="cp-page" id="cp-savings">
+      <div class="cp-sav"><div class="cp-sav-title">&#128176; Your financial impact</div>
+        <div class="cp-sav-grid">
+          <div><div class="cp-sv">&#8377;12,480</div><div class="cp-sl">Total savings to date</div></div>
+          <div><div class="cp-sv">&#8377;3,660</div><div class="cp-sl">Monthly savings</div></div>
+          <div><div class="cp-sv">3.2 yrs</div><div class="cp-sl">Payback remaining</div></div>
+          <div><div class="cp-sv">1,847 kWh</div><div class="cp-sl">Total generated</div></div>
+          <div><div class="cp-sv">0.98 t</div><div class="cp-sl">CO&#8322; saved</div></div>
+          <div><div class="cp-sv">&#8377;10.4L</div><div class="cp-sl">Projected 25yr savings</div></div>
+        </div>
+      </div>
+      <div class="g2">
+        <div class="cp-panel"><div class="cp-ph"><span class="cp-pht">Bill comparison</span></div><div class="cp-pb">
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="background:#FEF2F2;border-radius:8px;padding:12px 16px"><div style="font-size:11px;color:#991B1B;font-weight:700;margin-bottom:4px">BEFORE SOLAR</div><div style="font-size:22px;font-weight:900;color:#DC2626">&#8377;4,200</div><div style="font-size:11px;color:#B91C1C">Monthly grid bill</div></div>
+            <div style="background:#ECFDF5;border-radius:8px;padding:12px 16px"><div style="font-size:11px;color:#065F46;font-weight:700;margin-bottom:4px">AFTER SOLAR</div><div style="font-size:22px;font-weight:900;color:#10B981">&#8377;540</div><div style="font-size:11px;color:#047857">Monthly bill (net metering)</div></div>
+            <div style="background:#FFFBEB;border-radius:8px;padding:12px 16px"><div style="font-size:11px;color:#92400E;font-weight:700;margin-bottom:4px">YOU SAVE EVERY MONTH</div><div style="font-size:22px;font-weight:900;color:#D97706">&#8377;3,660</div></div>
+          </div>
+        </div></div>
+        <div class="cp-panel"><div class="cp-ph"><span class="cp-pht">Loan repayment</span></div><div class="cp-pb">
+          <div style="margin-bottom:16px">
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:12.5px;color:#6B7080">Total loan</span><span style="font-size:12.5px;font-weight:700;color:#14151A">&#8377;1,76,000</span></div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:12.5px;color:#6B7080">Paid so far</span><span style="font-size:12.5px;font-weight:700;color:#10B981">&#8377;12,480</span></div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:10px"><span style="font-size:12.5px;color:#6B7080">Outstanding</span><span style="font-size:12.5px;font-weight:700;color:#D97706">&#8377;1,63,520</span></div>
+            <div style="height:8px;background:#F0F2F5;border-radius:4px"><div style="height:8px;background:#10B981;border-radius:4px;width:7%"></div></div>
+            <div style="font-size:11px;color:#6B7080;margin-top:5px">EMI: &#8377;2,080/month &middot; 7.2% p.a.</div>
+          </div>
+          <div style="background:#F0FFF4;border:1px solid #A7F3D0;border-radius:8px;padding:10px 14px;font-size:12px;color:#065F46"><strong>Your savings (&#8377;3,660) exceed your EMI (&#8377;2,080) &mdash; solar pays for itself!</strong></div>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- service -->
+    <div class="cp-page" id="cp-service">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <div style="font-size:17px;font-weight:800;color:#14151A">Service requests</div>
+        <button class="cp-btn-pri">+ Raise Ticket</button>
+      </div>
+      <div class="cp-panel"><div class="cp-ph"><span class="cp-pht">Open tickets</span></div><div class="cp-pb">
+        <div style="background:#F8F9FC;border:1px solid #E4E6EC;border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:14px">
+          <div style="font-family:monospace;font-size:11px;color:#6B7080;width:80px">TKT-0041</div>
+          <div style="flex:1"><div style="font-size:13px;font-weight:600;color:#14151A">Inverter display showing error E-07</div><div style="font-size:11px;color:#6B7080;margin-top:1px">Raised Mar 12 &middot; Engineer visit scheduled Mar 18</div></div>
+          <span class="badge bq">In progress</span>
+        </div>
+      </div></div>
+      <div class="cp-panel"><div class="cp-ph"><span class="cp-pht">Resolved</span></div><div class="cp-pb">
+        <div style="background:#F8F9FC;border:1px solid #E4E6EC;border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:14px;opacity:.7;margin-bottom:8px">
+          <div style="font-family:monospace;font-size:11px;color:#6B7080;width:80px">TKT-0028</div>
+          <div style="flex:1"><div style="font-size:13px;font-weight:600;color:#14151A">Panel cleaning request</div><div style="font-size:11px;color:#6B7080;margin-top:1px">Resolved Feb 20</div></div>
+          <span class="badge bw">Resolved &#10003;</span>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- referral -->
+    <div class="cp-page" id="cp-referral">
+      <div class="cp-ref">
+        <div>
+          <div style="font-size:16px;font-weight:900;color:#EEEEF0;margin-bottom:4px">Refer a neighbour, earn &#8377;2,000 &#127881;</div>
+          <div style="font-size:12px;color:#6B7080;margin-bottom:16px">Every successful installation earns you &#8377;2,000 cash</div>
+          <div style="font-size:11px;color:#6B7080;margin-bottom:8px">Your referral code</div>
+          <div class="cp-ref-code" onclick="this.textContent='Copied!';setTimeout(()=>this.textContent='SURYA-PRIYA-2847',1500)">SURYA-PRIYA-2847</div>
+        </div>
+      </div>
+      <div class="g2">
+        <div class="cp-panel"><div class="cp-ph"><span class="cp-pht">Your referrals</span></div><div class="cp-pb">
+          <div style="display:flex;justify-content:space-around;margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid #E4E6EC">
+            <div style="text-align:center"><div style="font-size:24px;font-weight:900;color:#14151A">3</div><div style="font-size:11px;color:#6B7080">Referred</div></div>
+            <div style="text-align:center"><div style="font-size:24px;font-weight:900;color:#10B981">1</div><div style="font-size:11px;color:#6B7080">Installed</div></div>
+            <div style="text-align:center"><div style="font-size:24px;font-weight:900;color:#D97706">&#8377;2,000</div><div style="font-size:11px;color:#6B7080">Earned</div></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;justify-content:space-between;font-size:12.5px;color:#14151A"><span>Suresh Patil &middot; Neighbour</span><span class="badge bw" style="font-size:10px">Installed &#10003;</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12.5px;color:#14151A"><span>Kavita Joshi &middot; Sister</span><span class="badge bq" style="font-size:10px">In survey</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12.5px;color:#14151A"><span>Mohan Rao &middot; Colleague</span><span class="badge bp" style="font-size:10px">Proposal sent</span></div>
+          </div>
+        </div></div>
+        <div class="cp-panel"><div class="cp-ph"><span class="cp-pht">How it works</span></div><div class="cp-pb">
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;gap:12px"><div style="width:28px;height:28px;border-radius:50%;background:#FEF3C7;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#D97706;flex-shrink:0">1</div><div><div style="font-size:13px;font-weight:700;color:#14151A">Share your code</div><div style="font-size:11.5px;color:#6B7080">Send to friends, family, neighbours</div></div></div>
+            <div style="display:flex;gap:12px"><div style="width:28px;height:28px;border-radius:50%;background:#FEF3C7;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#D97706;flex-shrink:0">2</div><div><div style="font-size:13px;font-weight:700;color:#14151A">They get a free assessment</div><div style="font-size:11.5px;color:#6B7080">Our team visits and assesses their roof</div></div></div>
+            <div style="display:flex;gap:12px"><div style="width:28px;height:28px;border-radius:50%;background:#ECFDF5;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#10B981;flex-shrink:0">3</div><div><div style="font-size:13px;font-weight:700;color:#14151A">You earn &#8377;2,000</div><div style="font-size:11.5px;color:#6B7080">Credited after their installation completes</div></div></div>
+          </div>
+        </div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="overlay" id="ov-lead" onclick="if(event.target===this)closeModal('lead')">
+  <div class="modal"><div class="modal-title">Add new <span>lead</span></div>
+    <div class="fgrid">
+      <div class="fg"><label>Name *</label><input type="text" placeholder="Customer name"></div>
+      <div class="fg"><label>Mobile *</label><input type="tel" placeholder="98XXXXXXXX"></div>
+      <div class="fg"><label>City</label><input type="text" placeholder="Pune"></div>
+      <div class="fg"><label>Monthly units</label><input type="number" placeholder="350"></div>
+      <div class="fg"><label>Source</label><select><option>WhatsApp</option><option>Website</option><option>Agent</option><option>Walk-in</option></select></div>
+      <div class="fg"><label>Agent</label><select><option>Vijay Kumar</option><option>Meena Joshi</option><option>Arun Singh</option><option>Deepa Rao</option></select></div>
+      <div class="fg"><label>Roof type</label><select><option>RCC Flat</option><option>Mangalore tile</option><option>Metal sheet</option></select></div>
+      <div class="fg"><label>System size</label><select><option>3 kW</option><option>4 kW</option><option>5 kW</option><option>7 kW</option><option>10 kW</option></select></div>
+      <div class="fg full"><label>Notes</label><textarea placeholder="Any special requirements..."></textarea></div>
+    </div>
+    <div class="mact"><button class="btn-ghost" onclick="closeModal('lead')">Cancel</button><button class="tb-btn" onclick="closeModal('lead')">Save Lead</button></div>
+  </div>
+</div>
+<div class="overlay" id="ov-agent" onclick="if(event.target===this)closeModal('agent')">
+  <div class="modal"><div class="modal-title">Add new <span>agent</span></div>
+    <div class="fgrid">
+      <div class="fg"><label>Name *</label><input type="text"></div>
+      <div class="fg"><label>Mobile *</label><input type="tel"></div>
+      <div class="fg"><label>Zone / City</label><input type="text"></div>
+      <div class="fg"><label>Commission (Rs/install)</label><input type="number" placeholder="3000"></div>
+    </div>
+    <div class="mact"><button class="btn-ghost" onclick="closeModal('agent')">Cancel</button><button class="tb-btn" onclick="closeModal('agent')">Add Agent</button></div>
+  </div>
+</div>
+
+<script>
+// ── USERS ──
+var U = {
+  admin:    {role:'a', name:'Rajesh Kumar',  av:'RK', rl:'Super Admin'},
+  ops:      {role:'a', name:'Anand Patil',   av:'AP', rl:'Operations'},
+  sales:    {role:'a', name:'Meera Singh',   av:'MS', rl:'Sales Manager'},
+  finance:  {role:'a', name:'Sunita Shah',   av:'SS', rl:'Finance'},
+  customer: {role:'c', name:'Priya Sharma',  av:'PR', rl:'Customer'}
+};
+
+// ── GO (one-click login) ──
+function go(who) {
+  var u = U[who];
+  if (!u) return;
+  // hide all screens
+  document.getElementById('s-login').className    = 'screen';
+  document.getElementById('s-admin').className    = 'screen';
+  document.getElementById('s-customer').className = 'screen';
+  if (u.role === 'c') {
+    document.getElementById('cp-av-el').textContent = u.av;
+    document.getElementById('cp-nm-el').textContent = u.name;
+    document.getElementById('cp-fn').textContent    = u.name.split(' ')[0];
+    document.getElementById('s-customer').className = 'screen on';
+    buildCPChart();
+  } else {
+    document.getElementById('sb-av').textContent = u.av;
+    document.getElementById('sb-nm').textContent = u.name;
+    document.getElementById('sb-rl').textContent = u.rl;
+    document.getElementById('s-admin').className = 'screen on';
+    buildAdmin();
+  }
+}
+
+// ── SIGN OUT ──
+function signout() {
+  document.getElementById('s-admin').className    = 'screen';
+  document.getElementById('s-customer').className = 'screen';
+  document.getElementById('s-login').className    = 'screen on';
+}
+
+// ── ADMIN NAV ──
+var TITLES = {dashboard:'Dashboard',leads:'Lead Capture',pipeline:'Sales Pipeline',proposals:'Proposals',whatsapp:'WhatsApp Leads',rooftop:'AI Rooftop Analysis',projects:'Projects',subsidy:'Subsidy Tracking',monitoring:'System Monitor',agents:'Agents & Commission',finance:'Loans & Finance'};
+function nav(btn) {
+  var id = btn.getAttribute('data-p');
+  document.querySelectorAll('.apage').forEach(function(p){p.classList.remove('on');});
+  document.querySelectorAll('.sb-btn').forEach(function(b){b.classList.remove('on');});
+  var pg = document.getElementById('ap-'+id);
+  if (pg) pg.classList.add('on');
+  btn.classList.add('on');
+  document.getElementById('atitle').textContent = TITLES[id] || id;
+}
+
+// ── CP NAV ──
+function cpnav(btn) {
+  var id = btn.getAttribute('data-cp');
+  document.querySelectorAll('.cp-page').forEach(function(p){p.classList.remove('on');});
+  document.querySelectorAll('.cp-tab').forEach(function(t){t.classList.remove('on');});
+  var pg = document.getElementById('cp-'+id);
+  if (pg) pg.classList.add('on');
+  btn.classList.add('on');
+}
+
+// ── MODALS ──
+function openModal(id){document.getElementById('ov-'+id).classList.add('on');}
+function closeModal(id){document.getElementById('ov-'+id).classList.remove('on');}
+
+// ── BUILD ADMIN DATA ──
+function buildAdmin() {
+  // Bar chart
+  var mv=[24,28,32,26,38,40,36,34,30,36,40,38];
+  var ml=['J','F','M','A','M','J','J','A','S','O','N','D'];
+  var mx=Math.max.apply(null,mv);
+  var el=document.getElementById('dash-chart');
+  if(el){el.innerHTML=mv.map(function(v,i){return '<div class="bbar"><div class="bfill" style="height:'+Math.round(v/mx*80)+'px"></div><div class="blbl">'+ml[i]+'</div></div>';}).join('');}
+
+  // Leads table
+  var ld=[
+    {n:'Priya Sharma',l:'Koregaon Park, Pune',u:420,k:7,s:'WhatsApp',a:'Vijay K.',st:'bn',sl:'New',d:'Today'},
+    {n:'Anita Desai',l:'Andheri, Mumbai',u:380,k:7,s:'Website',a:'Meena J.',st:'bq',sl:'Quoted',d:'Yesterday'},
+    {n:'Ramesh Jain',l:'Viman Nagar, Pune',u:310,k:5,s:'Agent',a:'Vijay K.',st:'bw',sl:'Won',d:'Mar 9'},
+    {n:'Mohan Verma',l:'Sector 12, Noida',u:540,k:10,s:'Website',a:'Arun S.',st:'bn',sl:'New',d:'Mar 11'},
+    {n:'Kavita Sharma',l:'Bhopal',u:220,k:4,s:'WhatsApp',a:'Deepa R.',st:'bl',sl:'Lost',d:'Mar 8'},
+    {n:'Vinod Tiwari',l:'Indore',u:600,k:10,s:'Agent',a:'Rohit S.',st:'bw',sl:'Won',d:'Mar 7'},
+    {n:'Sunita Rao',l:'Nagpur',u:290,k:5,s:'WhatsApp',a:'Vijay K.',st:'bq',sl:'Quoted',d:'Mar 6'},
+    {n:'Deepak Mehta',l:'Nashik',u:340,k:5,s:'Website',a:'Meena J.',st:'bn',sl:'New',d:'Mar 10'},
+  ];
+  var tb=document.getElementById('leads-tbody');
+  if(tb){tb.innerHTML=ld.map(function(l){return '<tr><td><div class="tdp">'+l.n+'</div></td><td style="color:#8B8FA0">'+l.l+'</td><td style="font-family:monospace;font-size:12px">'+l.u+'</td><td style="color:#F59E0B;font-weight:700;font-family:monospace">'+l.k+' kW</td><td style="font-size:12px;color:#8B8FA0">'+l.s+'</td><td style="color:#8B8FA0">'+l.a+'</td><td><span class="badge '+l.st+'">'+l.sl+'</span></td><td style="color:#52566A;font-size:12px">'+l.d+'</td></tr>';}).join('');}
+
+  // Kanban
+  var kb={'New Leads':[{n:'Priya Sharma',l:'Pune',k:'7 kW',a:'Vijay K.',d:'Today'},{n:'Mohan Verma',l:'Noida',k:'10 kW',a:'Arun S.',d:'Mar 11'},{n:'Swati Patil',l:'Kolhapur',k:'3 kW',a:'Deepa R.',d:'Mar 12'}],'Proposal Sent':[{n:'Anita Desai',l:'Mumbai',k:'7 kW | Rs3.2L',a:'Meena J.',d:'Yesterday'},{n:'Sunita Rao',l:'Nagpur',k:'5 kW | Rs2.3L',a:'Vijay K.',d:'Mar 6'}],'Won - Installing':[{n:'Ramesh Jain',l:'Pune',k:'5 kW | Rs1.76L',a:'Vijay K.',d:'Mar 9'},{n:'Vinod Tiwari',l:'Indore',k:'10 kW | Rs3.82L',a:'Rohit S.',d:'Mar 7'}],'Live Systems':[{n:'Mohan Lal',l:'Jaipur',k:'3 kW Active',a:'Team C',d:'Mar 5'},{n:'Sunita K.',l:'Nagpur',k:'5 kW Active',a:'Team D',d:'Mar 8'}]};
+  var kan=document.getElementById('kanban');
+  if(kan){kan.innerHTML=Object.keys(kb).map(function(col){return '<div class="kcol"><div class="kch"><span class="kcn">'+col+'</span><span class="kcc">'+kb[col].length+'</span></div>'+kb[col].map(function(c){return '<div class="kcard2"><div class="kn">'+c.n+'</div><div class="kl">'+c.l+'</div><div class="kk">'+c.k+'</div><div class="kf"><span>'+c.a+'</span><span>'+c.d+'</span></div></div>';}).join('')+'</div>';}).join('');}
+
+  // Agents
+  var ag=[{n:'Vijay Kumar',z:'Pune & PCMC',i:'VK',le:52,ins:9,ea:141000,pa:114000},{n:'Meena Joshi',z:'Nashik',i:'MJ',le:38,ins:7,ea:99000,pa:99000},{n:'Arun Singh',z:'Nagpur',i:'AS',le:29,ins:6,ea:96000,pa:87000},{n:'Deepa Rao',z:'Kolhapur',i:'DR',le:24,ins:5,ea:72000,pa:60000},{n:'Rohit Shah',z:'Aurangabad',i:'RS',le:18,ins:3,ea:42000,pa:42000}];
+  var al=document.getElementById('agents-list');
+  if(al){al.innerHTML=ag.map(function(a){return '<div class="agcard"><div class="agav">'+a.i+'</div><div class="agi"><div class="agn">'+a.n+'</div><div class="agz">'+a.z+'</div><div class="agm"><div><div class="agmv">'+a.le+'</div><div class="agml">Leads</div></div><div><div class="agmv">'+a.ins+'</div><div class="agml">Installs</div></div><div><div class="agmv" style="color:#F59E0B">Rs'+Math.round(a.ea/1000)+'K</div><div class="agml">Earned</div></div></div></div><div class="agc"><div class="age">Rs'+Math.round(a.pa/1000)+'K</div><div class="agel">paid out</div><div class="agp" style="color:'+(a.ea>a.pa?'#F59E0B':'#10B981')+'">'+(a.ea>a.pa?'Rs'+Math.round((a.ea-a.pa)/1000)+'K pending':'Fully settled')+'</div></div></div>';}).join('');}
+}
+
+// ── BUILD CUSTOMER CHART ──
+function buildCPChart() {
+  var gv=[18,22,24,21,25,23,20,26,22,24,19,22,24,22];
+  var mx=Math.max.apply(null,gv);
+  var el=document.getElementById('cp-chart');
+  if(el){el.innerHTML=gv.map(function(v,i){return '<div class="cp-bbar"><div class="cp-bfill" style="height:'+Math.round(v/mx*92)+'px" title="Mar '+(i+1)+': '+v+' kWh"></div><div class="cp-blbl">'+(i+1)+'</div></div>';}).join('');}
+}
+
+// ── AI ROOFTOP ──
+function runAI() {
+  var btn=document.getElementById('ai-btn');
+  var load=document.getElementById('ai-loading');
+  var res=document.getElementById('ai-result');
+  btn.style.display='none';
+  load.style.display='block';
+  res.classList.remove('on');
+  var steps=['Fetching satellite imagery...','Detecting roof boundaries...','Calculating usable area...','Running pvlib simulation...','Generating proposal...'];
+  var i=0;
+  var iv=setInterval(function(){
+    var t=document.getElementById('ai-txt');
+    if(t) t.textContent=steps[i];
+    i++;
+    if(i>=steps.length){
+      clearInterval(iv);
+      setTimeout(function(){
+        load.style.display='none';
+        res.classList.add('on');
+        btn.style.display='block';
+      },500);
+    }
+  },800);
+}
+
+// ── WHATSAPP BOT ──
+var waBotFlow=[
+  {u:'Pune',b:'Great! Pune gets excellent solar radiation.
+
+Please upload a photo of your latest electricity bill so I can calculate your system size.'},
+  {u:'[bill uploaded]',b:'Thank you! Bill read successfully:
+Monthly units: 420 kWh
+DISCOM: MSEDCL
+
+Please share your complete address for rooftop analysis.'},
+  {u:'12 Prabhat Road Pune 411001',b:'Analysing rooftop via satellite...
+
+Roof area: 42 m2
+Usable area: 34 m2
+Recommended: 5 kW
+
+Generating your FREE proposal now...'},
+  {u:'Show proposal',b:'Your personalised proposal:
+
+5 kW system | 14 panels
+Cost: Rs2,30,000
+Subsidy: Rs54,000
+You pay: Rs1,76,000
+Payback: 3.9 years
+
+Reply YES to receive PDF on WhatsApp!'},
+  {u:'YES',b:'Proposal sent! Our team will call within 2 hours.
+Ref: PSG-2024-9001
+
+Thank you for choosing clean energy!'}
+];
+var waStep=0;
+function waSend(){
+  var inp=document.getElementById('wa-inp');
+  var msg=inp.value.trim();
+  if(!msg && waStep<waBotFlow.length) msg=waBotFlow[waStep].u;
+  if(!msg) return;
+  inp.value='';
+  var win=document.getElementById('wa-chat');
+  win.innerHTML+='<div class="wamsg usr">'+msg+'<div class="wmt">You</div></div>';
+  win.scrollTop=win.scrollHeight;
+  if(waStep<waBotFlow.length){
+    var resp=waBotFlow[waStep].b;
+    waStep++;
+    setTimeout(function(){
+      win.innerHTML+='<div class="wamsg bot">'+resp.replace(/
+/g,'<br>')+'<div class="wmt">SuryaSolar</div></div>';
+      win.scrollTop=win.scrollHeight;
+    },700);
+  }
+}
+</script>
+</body>
+</html>
